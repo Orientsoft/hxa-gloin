@@ -1,0 +1,5 @@
+database_url=mongodb://chromo:d2VsY29tZTEK@mongo:27017/chromoManager
+secret_key=welcome1
+src_path=/media/msd
+src_ext=MMI
+export_path=.

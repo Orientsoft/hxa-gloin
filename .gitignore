@@ -1,0 +1,14 @@
+.idea/
+app/__pycache__/
+app/api/__pycache__/
+app/models/__pycache__/
+app/core/__pycache__/
+app/utils/__pycache__/
+app/dependencies/__pycache__
+app/db/__pycache__
+app/crud/__pycache__
+deploy/mongodb-data/
+deploy/media/
+deploy/html
+deploy/chormo.tar
+media/

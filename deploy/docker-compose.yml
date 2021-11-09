@@ -1,0 +1,63 @@
+version: '2.0'
+services:
+  chromo-manager:
+    image: chromo-manager-backend:latest
+    container_name: chromo-manager
+    hostname: chromo-manager
+    expose:
+      - "8000"
+    ports:
+      - "8000:8000"
+    environment:
+      - LISTENPORT=8000
+    volumes:
+      - ./config:/workshop/config:ro
+      - //media/msd:/media/msd
+    depends_on:
+      - mongo
+
+
+  mongo:
+    image: mongo:latest
+    container_name: mongodb
+    hostname: mongo
+    environment:
+      - MONGO_INITDB_DATABASE=chromoManager
+      - MONGO_INITDB_ROOT_USERNAME=chromo
+      - MONGO_INITDB_ROOT_PASSWORD=d2VsY29tZTEK
+    restart: unless-stopped
+    volumes:
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-monog.js:ro
+      - ./mongodb-data:/data/db
+      - ./mongodb-data/dump:/dump
+    expose:
+      - "27017"
+    ports:
+      - 27017:27017
+
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongoexpress
+    restart: unless-stopped
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: chromo
+      ME_CONFIG_MONGODB_ADMINPASSWORD: d2VsY29tZTEK
+      ME_CONFIG_MONGODB_URL: mongodb://chromo:d2VsY29tZTEK@mongo:27017/
+    depends_on:
+      - mongo
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    restart: always
+    volumes:
+      - ./html:/usr/share/nginx/html
+      - ./conf.d:/etc/nginx/conf.d
+
+     
+    ports:
+      - "80:80"
+    links:
+      - chromo-manager
