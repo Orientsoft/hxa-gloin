@@ -26,3 +26,4 @@ jobs:
         run: docker build . --file Dockerfile --tag env.BLD_TAG
       - name: Push the Docker image
         run: docker push env.BLD_TAG
+
