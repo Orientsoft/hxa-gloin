@@ -17,7 +17,7 @@ jobs:
         id: date_time
         run: echo "::set-output name=date_time::$(date +'%Y-%m-%d-%s')"
         env:
-          BLD_TAG: hxa_gloin_${{ date_time.outputs.date_time }}
+          BLD_TAG: hxa_gloin_${{ steps.date_time.outputs.date_time }}
       - name: Docker Login
         id: docker_login
         run: |
