@@ -23,7 +23,7 @@ jobs:
         run: |
           echo "::set-output name=docker_login::$(docker login -u deploy -p Welcome1)"
       - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag env.BLD_TAG
+        run: docker build . --file Dockerfile --tag ${{ env.BLD_TAG }}
       - name: Push the Docker image
         run: docker push env.BLD_TAG
 
