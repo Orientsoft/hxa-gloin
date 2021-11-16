@@ -22,6 +22,7 @@ jobs:
         id: docker_login
         run: |
           echo "::set-output name=docker_login::$(docker login ${{ secrets.ORT_DOCKER_REGISTRY }} -u ${{ secrets.ODR_USER }}-p ${{ secrets.PWD}})"
+          echo "${{ steps.date_time.env.BLD_TAG }}"
       - name: Build the Docker image
         run: docker build --file Dockerfile --tag ${{ steps.date_time.env.BLD_TAG }}
       - name: Push the Docker image
