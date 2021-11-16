@@ -13,18 +13,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
       - name: Get current date time
         id: date_time
         run: echo "::set-output name=date_time::$(date "+%Y-%m-%d-%H-%M-%S")"
         env:
           BLD_TAG: hxa_gloin_${{ steps.date_time.outputs.date_time }}
+
       - name: Docker Login
         id: docker_login
         run: |
-          echo "::set-output name=docker_login::$(docker login ${{ secrets.ORT_DOCKER_REGISTRY }} -u ${{ secrets.ODR_USER }}-p ${{ secrets.ODR_PWD}})"
+          echo "::set-output name=docker_login::$(docker login -u ${{ secrets.ODR_USER }}-p ${{ secrets.ODR_PWD}} ${{ secrets.ORT_DOCKER_REGISTRY }})"
           echo "${{ steps.date_time.env.BLD_TAG }}"
-      - name: Build the Docker image
-        run: docker build --file Dockerfile --tag ${{ steps.date_time.env.BLD_TAG }}
-      - name: Push the Docker image
-        run: docker push env.BLD_TAG
+
+      - name: Build the Docker image and push
+        run: |
+          time_tag = `date "+%Y-%m-%d-%H-%M-%S"`
+          bld_tag = `echo "hxa_gloin_${time_tag}"`
+          echo "${bld_tag}"
+          docker build --file Dockerfile --tag ${bld_tag}
+          docker push ${bld_tag}
 
