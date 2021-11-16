@@ -14,17 +14,17 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Get current date time
-        id: date_time
-        run: echo "::set-output name=date_time::$(date +'%Y-%m-%d-%s')"
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d-%s')"
         env:
-          BLD_TAG: hxa_gloin_${{ steps.date_time.outputs.date_time }}
+          BLD_TAG: hxa_gloin_${{ steps.date.outputs.date }}
       - name: Docker Login
         id: docker_login
         run: |
           echo "::set-output name=docker_login::$(docker login ${{ secrets.ORT_DOCKER_REGISTRY }} -u ${{ secrets.ODR_USER }}-p ${{ secrets.PWD}})"
-          echo "${{ steps.date_time.env.BLD_TAG }}"
+          echo "${{ steps.date.env.BLD_TAG }}"
       - name: Build the Docker image
-        run: docker build --file Dockerfile --tag ${{ steps.date_time.env.BLD_TAG }}
+        run: docker build --file Dockerfile --tag ${{ steps.date.env.BLD_TAG }}
       - name: Push the Docker image
         run: docker push env.BLD_TAG
 
