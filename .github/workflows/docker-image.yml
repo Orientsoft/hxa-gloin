@@ -21,7 +21,7 @@ jobs:
       - name: Docker Login
         id: docker_login
         run: |
-          echo "::set-output name=docker_login::$(docker login -u deploy -p Welcome1)"
+          echo "::set-output name=docker_login::$(docker login ${{ secrets.ORT_DOCKER_REGISTRY }} -u ${{ secrets.ODR_USER }}-p ${{ secrets.PWD}})"
       - name: Build the Docker image
         run: docker build --file Dockerfile --tag ${{ env.BLD_TAG }}
       - name: Push the Docker image
