@@ -17,30 +17,29 @@ jobs:
         id: date_time
         run: echo "::set-output name=date_time::$(date +'%Y-%m-%d-%H-%M-%S')"
 
-      - name: Test with Env variables
-        id: test_env
-        run: echo $TAG_NAME - $RELEASE_NAME
-        env:
-          TAG_NAME: github-tag-${{ steps.date_time.outputs.date_time }}
-          RELEASE_NAME: github-release-${{ steps.date_time.outputs.date_time }}
-
       - uses: actions/checkout@v2
+
       - name: Docker Login
         id: docker_login
         run: |
           echo "::set-output name=docker_login::$(docker login -u ${{ secrets.ODR_USER }}-p ${{ secrets.ODR_PWD}} ${{ secrets.ORT_DOCKER_REGISTRY }})"
-          echo ${{ steps.test_env.env.BLD_TAG }}
 
       - name: Build the Docker image
         run: |
-          echo $BLD_TAG
-          docker build --file Dockerfile --tag $BLD_TAG .
+          echo $BLD_IMG_TAG
+          docker build --file Dockerfile --tag $BLD_IMG_TAG .
         env:
-          BLD_TAG: hxa_gloin_${{ steps.date_time.outputs.date_time }}
+          BLD_IMG_TAG: hxa_gloin_${{ steps.date_time.outputs.date_time }}
+
+      - name: Tag docker image
+        run: |
+          docker tag $BLD_IMG_TAG ${{ secrets.ORT_DOCKER_REGISTRY }}/$BLD_IMG_TAG
+        env:
+          BLD_IMG_TAG: hxa_gloin_${{ steps.date_time.outputs.date_time }}
 
       - name: Push docker image to ODR
         run: |
-          echo $BLD_TAG
-          docker push $BLD_TAG
+          echo $BLD_IMG_TAG
+          docker push ${{ secrets.ORT_DOCKER_REGISTRY }}/$BLD_IMG_TAG
         env:
-          BLD_TAG: hxa_gloin_${{ steps.date_time.outputs.date_time }}
+          BLD_IMG_TAG: hxa_gloin_${{ steps.date_time.outputs.date_time }}
