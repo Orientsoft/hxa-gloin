@@ -3,7 +3,7 @@ FROM python:3.8.1-slim
 RUN mkdir -p /media/msd /install
 WORKDIR /install
 COPY requirements.txt /requirements.txt
-RUN pip install -r /requirements.txt -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
+RUN pip install -r /requirements.txt
 
 WORKDIR /workshop
 COPY app ./app
