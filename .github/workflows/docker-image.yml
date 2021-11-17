@@ -31,10 +31,14 @@ jobs:
           echo "::set-output name=docker_login::$(docker login -u ${{ secrets.ODR_USER }}-p ${{ secrets.ODR_PWD}} ${{ secrets.ORT_DOCKER_REGISTRY }})"
           echo ${{ steps.test_env.env.BLD_TAG }}
 
-      - name: Build the Docker image and push
+      - name: Build the Docker image
         run: |
           docker build --file Dockerfile --tag $BLD_TAG
-          docker push $BLD_TAG
         env:
           BLD_TAG: hxa_gloin_${{ steps.date_time.outputs.date_time }}
 
+      - name: Push docker image to ODR
+        run: |
+          docker push $BLD_TAG
+        env:
+          BLD_TAG: hxa_gloin_${{ steps.date_time.outputs.date_time }}
