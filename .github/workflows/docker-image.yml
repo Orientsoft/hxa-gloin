@@ -16,7 +16,12 @@ jobs:
 
       - name: Get current date time
         id: date_time
-        run: echo "::set-output name=date_time::$(date "+%Y-%m-%d-%H-%M-%S")"
+        run: |
+          time_tag = `date "+%Y-%m-%d-%H-%M-%S"`
+          bld_tag = `echo "hxa_gloin_${time_tag}"`
+          echo "::set-output name=date_time::$(date +'%Y-%m-%d-%H-%M-%S')"
+          echo "${{ steps.date_time.env.BLD_TAG }}"
+          echo ${{ time_tag }}
         env:
           BLD_TAG: hxa_gloin_${{ steps.date_time.outputs.date_time }}
 
