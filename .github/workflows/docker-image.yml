@@ -34,7 +34,7 @@ jobs:
       - name: Build the Docker image
         run: |
           echo $BLD_TAG
-          docker build --file Dockerfile --tag $BLD_TAG
+          docker build --file Dockerfile --tag $BLD_TAG .
         env:
           BLD_TAG: hxa_gloin_${{ steps.date_time.outputs.date_time }}
 
