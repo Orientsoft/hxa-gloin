@@ -19,11 +19,10 @@ jobs:
 
       - name: Test with Env variables
         id: test_env
-        run: echo $TAG_NAME - $RELEASE_NAME - $BLD_TAG
+        run: echo $TAG_NAME - $RELEASE_NAME
         env:
           TAG_NAME: github-tag-${{ steps.date_time.outputs.date_time }}
           RELEASE_NAME: github-release-${{ steps.date_time.outputs.date_time }}
-          BLD_TAG: hxa_gloin_${{ steps.date_time.outputs.date_time }}
 
       - uses: actions/checkout@v2
       - name: Docker Login
@@ -34,6 +33,8 @@ jobs:
 
       - name: Build the Docker image and push
         run: |
-          docker build --file Dockerfile --tag ${{ steps.test_env.env.BLD_TAG }}
-          docker push ${{ steps.test_env.env.BLD_TAG }}
+          docker build --file Dockerfile --tag $BLD_TAG
+          docker push $BLD_TAG
+        env:
+          BLD_TAG: hxa_gloin_${{ steps.date_time.outputs.date_time }}
 
