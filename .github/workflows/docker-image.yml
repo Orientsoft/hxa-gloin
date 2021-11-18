@@ -22,11 +22,12 @@ jobs:
       - name: Docker Login
         id: docker_login
         run: |
-          echo "::set-output name=docker_login::$(docker login -u ${{ secrets.ODR_USER }}-p ${{ secrets.ODR_PWD}} ${{ secrets.ORT_DOCKER_REGISTRY }})"
+          docker login -u ${{ secrets.ODR_USER }} -p ${{ secrets.ODR_PWD}} ${{ secrets.ORT_DOCKER_REGISTRY }}
+          # echo "::set-output name=docker_login::$(docker login -u ${{ secrets.ODR_USER }} -p ${{ secrets.ODR_PWD}} ${{ secrets.ORT_DOCKER_REGISTRY }})"
 
       - name: Build the Docker image
         run: |
-          echo $DATE_TIME_TAG
+          echo ${{ secrets.ORT_DOCKER_REGISTRY }}/test/hxa_gloin_img:$DATE_TIME_TAG
           docker build --file Dockerfile --tag ${{ secrets.ORT_DOCKER_REGISTRY }}/test/hxa_gloin_img:$DATE_TIME_TAG .
         env:
           DATE_TIME_TAG: ${{ steps.date_time.outputs.date_time }}
@@ -39,7 +40,7 @@ jobs:
 
       - name: Push docker image to ODR
         run: |
-          echo $DATE_TIME_TAG
+          echo ${{ secrets.ORT_DOCKER_REGISTRY }}/test/hxa_gloin_img:$DATE_TIME_TAG
           docker push ${{ secrets.ORT_DOCKER_REGISTRY }}/test/hxa_gloin_img:$DATE_TIME_TAG
         env:
           DATE_TIME_TAG: ${{ steps.date_time.outputs.date_time }}
