@@ -26,20 +26,20 @@ jobs:
 
       - name: Build the Docker image
         run: |
-          echo $BLD_IMG_TAG
-          docker build --file Dockerfile --tag ${{ secrets.ORT_DOCKER_REGISTRY }}/test/$BLD_IMG_TAG .
+          echo $DATE_TIME_TAG
+          docker build --file Dockerfile --tag ${{ secrets.ORT_DOCKER_REGISTRY }}/test/hxa_gloin_img:$DATE_TIME_TAG .
         env:
-          BLD_IMG_TAG: hxa_gloin_${{ steps.date_time.outputs.date_time }}
+          DATE_TIME_TAG: ${{ steps.date_time.outputs.date_time }}
 
       # - name: Tag docker image
       #   run: |
-      #     docker tag $BLD_IMG_TAG ${{ secrets.ORT_DOCKER_REGISTRY }}/test/$BLD_IMG_TAG
+      #     docker tag $DATE_TIME_TAG ${{ secrets.ORT_DOCKER_REGISTRY }}/test/$DATE_TIME_TAG
       #   env:
-      #     BLD_IMG_TAG: hxa_gloin_${{ steps.date_time.outputs.date_time }}
+      #     DATE_TIME_TAG: hxa_gloin_${{ steps.date_time.outputs.date_time }}
 
       - name: Push docker image to ODR
         run: |
-          # echo $BLD_IMG_TAG
-          docker push ${{ secrets.ORT_DOCKER_REGISTRY }}/test/$BLD_IMG_TAG
+          echo $DATE_TIME_TAG
+          docker push ${{ secrets.ORT_DOCKER_REGISTRY }}/test/hxa_gloin_img:$DATE_TIME_TAG
         env:
-          BLD_IMG_TAG: hxa_gloin_${{ steps.date_time.outputs.date_time }}
+          DATE_TIME_TAG: ${{ steps.date_time.outputs.date_time }}
